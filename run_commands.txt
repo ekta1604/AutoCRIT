@@ -1,0 +1,23 @@
+# 🟢 AI Review Bot Commands
+
+1. MongoDB:
+"C:\Program Files\MongoDB\Server\6.0\bin\mongod.exe"
+
+2. Python Analyzer:
+cd ai-review-bot\python-analyzer
+.\venv\Scripts\activate
+uvicorn main:app --reload --port 8000
+http://localhost:8000/docs
+
+3. Express + Probot:
+cd ai-review-bot
+npm start
+http://localhost:3000
+
+4. React Dashboard:
+cd ai-review-bot\review-dashboard
+npm start
+http://localhost:3002
+
+5. Smee Proxy:
+npx smee-client --url https://smee.io/RmuaX6iSO7SSbA1t --path /api/github/webhooks --port 3000
