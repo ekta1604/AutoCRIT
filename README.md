@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ai-review-bot
 
 > A GitHub App built with [Probot](https://github.com/probot/probot) that A Probot app
@@ -31,3 +32,7 @@ For more, check out the [Contributing Guide](CONTRIBUTING.md).
 ## License
 
 [ISC](LICENSE) © 2025 Ekta Patel
+=======
+# AutoCRIT
+AI-Powered Code Review Bot
+>>>>>>> 34bf6d38da3320faa08dece2ce0c7385b4e1dc27
