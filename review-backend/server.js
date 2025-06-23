@@ -22,13 +22,12 @@ const analysisSchema = new mongoose.Schema({
 
 const AnalysisResult = mongoose.model("AnalysisResult", analysisSchema, "reviews");
 
-// MongoDB Connection
-// ✅ Correct for local development outside Docker
-mongoose.connect("mongodb://mongodb:27017/codeReviews")
+// MongoDB Atlas Connection (from .env or Render environment)
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
   .catch(err => console.error("❌ MongoDB connection failed:", err));
 
-// 🔐 JWT Middleware
+// JWT Middleware
 function authenticateToken(req, res, next) {
   const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(" ")[1];
@@ -50,7 +49,7 @@ function authorizeRoles(...allowedRoles) {
   };
 }
 
-// 🔑 Demo login endpoint (fake user login for testing roles)
+// Demo login route (for generating JWT token)
 app.post("/api/login", (req, res) => {
   const { username, role } = req.body;
   if (!username || !["admin", "viewer"].includes(role)) {
@@ -61,7 +60,7 @@ app.post("/api/login", (req, res) => {
   res.json({ token, role });
 });
 
-// 🚫 Unprotected analysis saving endpoint
+// Public route to save analysis results (no auth)
 app.post("/api/analysis", async (req, res) => {
   try {
     const result = new AnalysisResult(req.body);
@@ -73,7 +72,7 @@ app.post("/api/analysis", async (req, res) => {
   }
 });
 
-// 🔒 Protected endpoint: admin-only access
+// Protected route to fetch analysis results (admin only)
 app.get("/api/secure-analysis", authenticateToken, authorizeRoles("admin"), async (req, res) => {
   try {
     const results = await AnalysisResult.find().sort({ createdAt: -1 });
@@ -83,7 +82,7 @@ app.get("/api/secure-analysis", authenticateToken, authorizeRoles("admin"), asyn
   }
 });
 
-// 🟢 Public access for dashboard (can be protected later)
+// Public route to fetch results (used in dashboard)
 app.get("/api/analysis", async (req, res) => {
   try {
     const results = await AnalysisResult.find().sort({ createdAt: -1 });
@@ -93,7 +92,8 @@ app.get("/api/analysis", async (req, res) => {
   }
 });
 
-const PORT = 3001;
+// Run server on environment port (for Render) or 3001 locally
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`🚀 Express MongoDB server running on http://localhost:${PORT}`);
 });
