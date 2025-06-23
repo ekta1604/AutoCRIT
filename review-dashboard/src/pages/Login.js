@@ -38,37 +38,71 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <form onSubmit={handleLogin} className="bg-white p-6 rounded shadow-md w-80">
-        <h2 className="text-2xl font-semibold mb-4">Login</h2>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 font-mono">
+      {/* Background elements */}
+      <img
+        src="/github-bg.png"
+        alt="Background"
+        className="absolute inset-0 w-full h-full object-contain object-center opacity-5 pointer-events-none"
+      />
+      <div className="absolute top-0 left-0 w-96 h-96 bg-teal-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-pulse"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-500 rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-pulse [animation-delay:4s]"></div>
 
-        {error && <p className="text-red-500 mb-2">{error}</p>}
+      {/* Login Card */}
+      <div className="relative animate-scaleIn w-full max-w-md p-8 m-4 space-y-8 glass rounded-2xl shadow-2xl">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold tracking-wider text-white">
+            Welcome
+          </h1>
+          <p className="text-gray-400 mt-2">Sign in to the dashboard</p>
+        </div>
 
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="w-full p-2 border rounded mb-3"
-          required
-        />
+        <form onSubmit={handleLogin} className="space-y-6">
+          {error && (
+            <p className="bg-red-900/50 text-red-300 border border-red-700/50 rounded-lg text-center p-3 text-sm">
+              {error}
+            </p>
+          )}
 
-        <select
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
-          className="w-full p-2 border rounded mb-4"
-        >
-          <option value="viewer">Viewer</option>
-          <option value="admin">Admin</option>
-        </select>
+          <div className="relative">
+            <input
+              type="text"
+              id="username"
+              placeholder=" " // Required for floating label
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="block px-4 py-3 w-full text-lg text-white bg-black/20 rounded-lg border-2 border-gray-600 appearance-none focus:outline-none focus:ring-0 focus:border-teal-400 peer transition"
+              required
+            />
+            <label
+              htmlFor="username"
+              className="absolute text-lg text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-teal-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-1"
+            >
+              Username
+            </label>
+          </div>
 
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-        >
-          Login
-        </button>
-      </form>
+          <select
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            className="w-full px-4 py-3 bg-black/20 border-2 border-gray-600 rounded-lg text-white focus:outline-none focus:ring-0 focus:border-teal-400 transition"
+          >
+            <option value="viewer" className="bg-gray-900">
+              Viewer
+            </option>
+            <option value="admin" className="bg-gray-900">
+              Admin
+            </option>
+          </select>
+
+          <button
+            type="submit"
+            className="w-full py-3 bg-teal-500 text-black font-bold rounded-lg shadow-lg hover:bg-teal-400 hover:scale-105 transform transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-teal-500/50 animate-glow"
+          >
+            Login
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
