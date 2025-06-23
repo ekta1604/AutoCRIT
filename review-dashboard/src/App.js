@@ -1,3 +1,4 @@
+// App.jsx
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
@@ -9,16 +10,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
-
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Main />
-            </ProtectedRoute>
-          }
-        />
-
+        <Route path="/dashboard" element={<ProtectedRoute><Main /></ProtectedRoute>} />
         <Route path="/" element={<Navigate to="/dashboard" />} />
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
