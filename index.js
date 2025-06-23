@@ -1,6 +1,13 @@
 import fetch from "node-fetch";
+import { Configuration, OpenAIApi } from "openai";
 import * as dotenv from "dotenv";
 dotenv.config();
+
+// ✅ OpenAI v3 compatible setup
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+const openai = new OpenAIApi(configuration);
 
 export default (app) => {
   console.log("🤖 Probot app loaded");
@@ -40,7 +47,7 @@ export default (app) => {
 
         const content = Buffer.from(res.data.content, 'base64').toString('utf8');
 
-        // 🔁 Use Docker service name instead of localhost
+        // 🔍 Run static analysis
         const analysisRes = await fetch("http://analyzer:8000/analyze", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -50,7 +57,7 @@ export default (app) => {
         const analysis = await analysisRes.json();
         console.log(`✅ Analysis for ${file.filename}:`, analysis);
 
-        // 🔁 Store result using service name 'backend'
+        // 💾 Store result
         await fetch("http://backend:3001/api/analysis", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -61,10 +68,34 @@ export default (app) => {
           })
         });
 
+        // ✨ GPT-based suggestion
+        let gptSuggestion = "";
+        try {
+          const gptRes = await openai.createChatCompletion({
+            model: "gpt-4",
+            messages: [
+              {
+                role: "system",
+                content: "You are a helpful assistant that reviews Python code."
+              },
+              {
+                role: "user",
+                content: `Please review the following Python code and suggest improvements:\n\n${content}`
+              }
+            ]
+          });
+          gptSuggestion = gptRes.data.choices[0].message.content;
+        } catch (gptErr) {
+          console.error("❌ GPT analysis failed:", gptErr);
+        }
+
         fullComment += `📝 **${file.filename}**\n`;
         fullComment += "```txt\n";
         fullComment += (analysis.pylint_output || "").slice(0, 500);
-        fullComment += "\n```\n";
+        fullComment += "\n```";
+        if (gptSuggestion) {
+          fullComment += `💡 GPT Suggestions:\n> ${gptSuggestion.replace(/\n/g, "\n> ")}\n\n`;
+        }
       } catch (err) {
         console.error(`❌ Error analyzing file ${file.filename}:`, err);
       }

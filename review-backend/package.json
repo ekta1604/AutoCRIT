@@ -1,6 +1,7 @@
 {
   "name": "review-backend",
   "version": "1.0.0",
+  "type": "module", 
   "description": "Express server to handle MongoDB storage for analysis",
   "main": "server.js",
   "scripts": {
