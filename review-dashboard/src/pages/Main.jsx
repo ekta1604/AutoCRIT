@@ -128,10 +128,6 @@ const Main = () => {
           ))}
         </div>
       </main>
-      {/* Footer */}
-    <footer className="text-center text-gray-500 text-sm py-6">
-      Made with ❤️ by <a href="https://github.com/ekta1604" target="_blank" rel="noopener noreferrer" className="underline hover:text-white">Ekta Patel</a> • <a href="https://github.com/ekta1604/ai-review-bot" target="_blank" rel="noopener noreferrer" className="underline hover:text-white">View Source</a>
-    </footer>
     </div>
   );
 };
