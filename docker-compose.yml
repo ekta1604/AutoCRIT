@@ -38,12 +38,12 @@ services:
     depends_on:
       - mongodb
 
-  dashboard:
-    build: ./review-dashboard
-    ports:
-      - "3002:3002"
-    working_dir: /app
-    command: serve -s build -l 3002
+  #dashboard:
+    #build: ./review-dashboard
+    #ports:
+    #  - "3002:3002"
+    #working_dir: /app
+    #command: serve -s build -l 3002
 
 volumes:
   mongo-data:
